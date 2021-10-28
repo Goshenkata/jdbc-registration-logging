@@ -77,7 +77,10 @@ public class RegisterSceneController implements Initializable {
     }
 
     private boolean checkDate(LocalDate birthday) {
-        //TODO
+        if (birthday == null) {
+            issueAlert("Please enter your birthday");
+            return false;
+        }
         if (ChronoUnit.YEARS.between(birthday,LocalDate.now()) < 18) {
             issueAlert("You must be over 18 to use this service");
             return  false;

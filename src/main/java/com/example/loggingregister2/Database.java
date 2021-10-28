@@ -38,6 +38,10 @@ public class Database {
         }
     }
 
+    public void register() {
+
+    }
+
     public boolean isUsernameAvailable(String username) {
         try(Connection conn = DriverManager.getConnection(CONNECTION_URL);
             Statement stmt = conn.createStatement();
