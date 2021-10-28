@@ -12,11 +12,13 @@ import java.util.ResourceBundle;
 
 public class Database {
 
+    private static final String CONNECTION_URL = "jdbc:mysql://localhost:3306/signuptest\",\"myuser\", \"Grabutanter@123";
+
     public void register(String username, String firstname,
                          String lastname, String email, String password,
                          Date birthday, File pfp) throws SQLException, IOException {
 
-        try(Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/signuptest","myuser", "Grabutanter@123");
+        try(Connection conn = DriverManager.getConnection(CONNECTION_URL);
             Statement stmt = conn.createStatement();
         ) {
             String register = "INSERT INTO user VALUES (?,?,?,?,?,?,?,?)";
@@ -37,7 +39,7 @@ public class Database {
     }
 
     public boolean isUsernameAvailable(String username) {
-        try(Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/signuptest","myuser", "Grabutanter@123");
+        try(Connection conn = DriverManager.getConnection(CONNECTION_URL);
             Statement stmt = conn.createStatement();
         ) {
             PreparedStatement ps = conn.prepareStatement("SELECT userId FROM user WHERE username = ?");
