@@ -14,9 +14,9 @@
             <Font name="System Bold" size="40.0" />
          </font>
       </Label>
-      <TextField layoutX="59.0" layoutY="98.0" promptText="username" styleClass="textField" stylesheets="@styleFx.css" />
-      <PasswordField layoutX="59.0" layoutY="138.0" promptText="password" styleClass="textField" stylesheets="@styleFx.css" />
-      <Button layoutX="83.0" layoutY="216.0" mnemonicParsing="false" styleClass="textField" stylesheets="@styleFx.css" text="Submit">
+      <TextField fx:id="username" layoutX="59.0" layoutY="98.0" promptText="username" styleClass="textField" stylesheets="@styleFx.css" />
+      <PasswordField fx:id="password" layoutX="59.0" layoutY="138.0" promptText="password" styleClass="textField" stylesheets="@styleFx.css" />
+      <Button layoutX="83.0" layoutY="216.0" mnemonicParsing="false" onAction="#login" styleClass="textField" stylesheets="@styleFx.css" text="Submit">
          <font>
             <Font size="21.0" />
          </font>

@@ -16,7 +16,6 @@ import javafx.stage.Stage;
 
 import java.io.*;
 import java.net.URL;
-import java.nio.file.Files;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -26,13 +25,17 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ controller for the register screen
+ */
+
 public class RegisterSceneController implements Initializable {
 
     private Stage stage;
     private Scene scene;
     private Parent root;
 
-    File pfp;
+    private File pfp;
 
     @FXML
     private ImageView pfpImageView;
@@ -58,15 +61,27 @@ public class RegisterSceneController implements Initializable {
         stage.show();
     }
 
-    public void register() throws SQLException, IOException {
+    public void register(ActionEvent event) throws SQLException, IOException {
         if (checkInput()) {
-            Database database = new Database();
-            database.register(username.getText(),firstName.getText(),lastName.getText(),
+            Database.register(username.getText(),firstName.getText(),lastName.getText(),
                         email.getText(),password.getText(), Date.valueOf(birthday.getValue()), pfp);
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("LogINScene.fxml"));
+            root = loader.load();
+
+            LogInController logInController = loader.getController();
+            logInController.setUsername(username.getText());
+            logInController.setPassword(password.getText());
+
+            stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
 
         }
     }
-
+//does a series of checks on the registration input
     private boolean checkInput() {
         return checkUsername(username.getText())
                 && checkName(firstName.getText(),lastName.getText())
@@ -75,8 +90,13 @@ public class RegisterSceneController implements Initializable {
                 && checkDate(birthday.getValue());
 
     }
-
-    private boolean checkDate(LocalDate birthday) {
+/*
+Checks if the date
+1) not null
+2) the user is over 18
+3) birthday date is realistically possible
+*/
+private boolean checkDate(LocalDate birthday) {
         if (birthday == null) {
             issueAlert("Please enter your birthday");
             return false;
@@ -91,7 +111,12 @@ public class RegisterSceneController implements Initializable {
         }
         return true;
     }
-
+    /*
+    Checks if the password
+    1) is not null
+    2) is over 8 characters
+    3) can fit in varchar(30)
+    */
     private boolean checkPassword(String password) {
         if (password.length()==0) {
             issueAlert("Please enter a password!");
@@ -108,6 +133,13 @@ public class RegisterSceneController implements Initializable {
         return true;
     }
 
+    /*
+  Checks if the email
+  1) can fit in varchar(30)
+  2) not null
+  3) does a regex to check it's actually an email
+
+  */
     private boolean checkEmail(String email) {
         if (email.length()>30) {
             issueAlert("email to long :(");
@@ -126,7 +158,11 @@ public class RegisterSceneController implements Initializable {
         return true;
     }
 
-
+    /*
+      checks if the first and last name
+      1)can fit in varchar(30)
+      2) is not null
+      */
     private boolean checkName(String firstName, String lastName) {
         if (firstName.length()>30) {
             issueAlert("First name must be less that 30 characters");
@@ -146,7 +182,12 @@ public class RegisterSceneController implements Initializable {
         }
         return true;
     }
-
+/*
+    checks if the first and last name
+      1)can fit in varchar(30)
+      2) is not null
+      3)is not already taken
+            */
     private boolean checkUsername(String username) {
         //check length
         if (username.length()>30) {
@@ -158,8 +199,7 @@ public class RegisterSceneController implements Initializable {
             return false;
         }
         //check if unique
-        Database database = new Database();
-        if (!database.isUsernameAvailable(username)) {
+        if (Database.isUsernameTaken(username)) {
             issueAlert("Username is already taken");
             return false;
         }
