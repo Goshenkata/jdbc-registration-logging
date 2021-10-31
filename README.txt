@@ -1,6 +1,6 @@
 Just me toying around with jdbc, pretty cool stuff tbh.
 
-CONFIGURATION: The project works on localhost so for it to work you need to set the username and password string in the Database class, it has a provided mysqldump for creating the database
+CONFIGURATION: The project works on localhost so for it to work you need to set the mysql username and password string in the Database class, it has a provided mysqldump for creating the database
 
 INFO: The program registers and logs users in the user table it tracks contains our theoritical user's usernames , first and last names, emails, passwords (as a simple varchar (very secure)), date of birth and the profile picture
 
